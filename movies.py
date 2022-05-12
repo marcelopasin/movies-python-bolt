@@ -17,13 +17,14 @@ from neo4j import (
 
 app = Flask(__name__, static_url_path="/static/")
 
-url = os.getenv("NEO4J_URI", "neo4j+s://demo.neo4jlabs.com")
-username = os.getenv("NEO4J_USER", "movies")
-password = os.getenv("NEO4J_PASSWORD", "movies")
 neo4j_version = os.getenv("NEO4J_VERSION", "4")
-database = os.getenv("NEO4J_DATABASE", "movies")
+url = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+username = os.getenv("NEO4J_USER", "neo4j")
+password = os.getenv("NEO4J_PASSWORD", "badaboom")
+database = os.getenv("NEO4J_DATABASE", "neo4j")
 
 port = os.getenv("PORT", 8080)
+ipaddress = os.getenv("IPADDRESS", "0.0.0.0")
 
 driver = GraphDatabase.driver(url, auth=basic_auth(username, password))
 
@@ -167,4 +168,4 @@ def vote_in_movie(title):
 if __name__ == "__main__":
     logging.root.setLevel(logging.INFO)
     logging.info("Starting on port %d, database is at %s", port, url)
-    app.run(port=port)
+    app.run(host=ipaddress, port=port)
